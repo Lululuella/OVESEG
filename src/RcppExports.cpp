@@ -5,6 +5,40 @@
 
 using namespace Rcpp;
 
+// pairwise_tstat_unscaled
+NumericMatrix pairwise_tstat_unscaled(NumericMatrix ymean, NumericMatrix stdevUnscaled);
+RcppExport SEXP _OVESEG_pairwise_tstat_unscaled(SEXP ymeanSEXP, SEXP stdevUnscaledSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type ymean(ymeanSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type stdevUnscaled(stdevUnscaledSEXP);
+    rcpp_result_gen = Rcpp::wrap(pairwise_tstat_unscaled(ymean, stdevUnscaled));
+    return rcpp_result_gen;
+END_RCPP
+}
+// row_min
+NumericVector row_min(NumericMatrix Y);
+RcppExport SEXP _OVESEG_row_min(SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Y(YSEXP);
+    rcpp_result_gen = Rcpp::wrap(row_min(Y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// row_which_max
+IntegerVector row_which_max(NumericMatrix Y);
+RcppExport SEXP _OVESEG_row_which_max(SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Y(YSEXP);
+    rcpp_result_gen = Rcpp::wrap(row_which_max(Y));
+    return rcpp_result_gen;
+END_RCPP
+}
 // shuffle_topm
 List shuffle_topm(NumericMatrix y, IntegerVector group, Nullable<NumericMatrix> weights, IntegerMatrix combM, IntegerVector geneSubset, int seed);
 RcppExport SEXP _OVESEG_shuffle_topm(SEXP ySEXP, SEXP groupSEXP, SEXP weightsSEXP, SEXP combMSEXP, SEXP geneSubsetSEXP, SEXP seedSEXP) {
@@ -23,6 +57,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_OVESEG_pairwise_tstat_unscaled", (DL_FUNC) &_OVESEG_pairwise_tstat_unscaled, 2},
+    {"_OVESEG_row_min", (DL_FUNC) &_OVESEG_row_min, 1},
+    {"_OVESEG_row_which_max", (DL_FUNC) &_OVESEG_row_which_max, 1},
     {"_OVESEG_shuffle_topm", (DL_FUNC) &_OVESEG_shuffle_topm, 6},
     {NULL, NULL, 0}
 };

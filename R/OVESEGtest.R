@@ -19,7 +19,7 @@
 #'
 #' #preprocess data
 OVESEGtest <- function(y, group, weights = NULL, alpha = 'moderated',
-                       NumPerm = 999, seed = 111, detail.return=TRUE,
+                       NumPerm = 999, seed = 111, detail.return=TRUE, cplusplus = TRUE,
                        BPPARAM=SerialParam()){
     K <- length(unique(group))
     if (K < 2) {
@@ -31,7 +31,7 @@ OVESEGtest <- function(y, group, weights = NULL, alpha = 'moderated',
     group <- factor(group)
 
     ppnull <- posteriorProbNull(y, group, weights = weights, alpha = alpha,
-                                  detail.return = detail.return)
+                                  detail.return = detail.return, cplusplus=cplusplus)
 
     ## permutation among top M groups
     tstat.perm <- c()
@@ -39,7 +39,7 @@ OVESEGtest <- function(y, group, weights = NULL, alpha = 'moderated',
     for(M in seq.int(2,K)) {
 
         ovet.perm <- OVEtstatPermTopM(y, group, ppnull$groupOrder, M=M, weights = weights, alpha = alpha,
-                         NumPerm = NumPerm, seed = seed, BPPARAM = BPPARAM)
+                         NumPerm = NumPerm, seed = seed, cplusplus=cplusplus, BPPARAM = BPPARAM)
 
         tstat.perm <- cbind(tstat.perm, ovet.perm$tstat.perm)
         topidx.perm <- cbind(topidx.perm, ovet.perm$topidx.perm)

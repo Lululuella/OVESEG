@@ -5,7 +5,8 @@
 \title{OVESEG test}
 \usage{
 OVESEGtest(y, group, weights = NULL, alpha = "moderated", NumPerm = 999,
-  seed = 111, detail.return = TRUE, BPPARAM = SerialParam())
+  seed = 111, detail.return = TRUE, cplusplus = TRUE,
+  BPPARAM = SerialParam())
 }
 \arguments{
 \item{y}{A data set that will be internally coerced into a matrix.

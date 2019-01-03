@@ -20,7 +20,7 @@
 #' #preprocess data
 OVEtstatPermTopM <- function(y, group, groupOrder, M, weights=NULL,
                         alpha='moderated', NumPerm=999, seed=111,
-                        BPPARAM=SerialParam()) {
+                        BPPARAM=SerialParam(), cplusplus = TRUE) {
 
     K <- length(unique(group))
     if (K < M)
@@ -45,30 +45,52 @@ OVEtstatPermTopM <- function(y, group, groupOrder, M, weights=NULL,
         geneSubset[geneidx] <- j
     }
 
+    if (cplusplus) {
+        permfunc <- function(p) {
+            if(p > 1){
+                groupid <- unlist(lapply(group, function(x) which(levels(group)==x)))
+                data.shuffled <- shuffle_topm(y, groupid, weights,
+                             combM, geneSubset,seeds[p-1])
+                y.p <- data.shuffled$y
+                weights.p <- data.shuffled$weights
+            } else {
+                y.p <- y
+                weights.p <- weights
+            }
 
+            ovesegt <- OVESEGtstat(y.p, group, weights = weights.p, alpha = alpha,
+                                   order.return = 'top1', lmfit.return = FALSE)
 
-    permfunc <- function(p) {
-        y.p <- y
-        weights.p <- weights
-        if(p > 1){
-            set.seed(seeds[p-1])
-            for(j in 1:ncombM) {
-                gidx <- group %in% levels(group)[combM[j,]]
-                sidx <- seq_along(group)
-                sidx[gidx] <- sample(sidx[gidx])
-                geneidx <- which(geneSubset==j)
-                y.p[geneidx,] <- y.p[geneidx, sidx]
-                if(!is.null(weights)) {
-                    weights.p[geneidx,] <- weights.p[geneidx, sidx]
+            return(ovesegt)
+        }
+    } else {
+        permfunc <- function(p) {
+            y.p <- y
+            weights.p <- weights
+            if(p > 1){
+                set.seed(seeds[p-1])
+                for(j in 1:ncombM) {
+                    gidx <- group %in% levels(group)[combM[j,]]
+                    sidx <- seq_along(group)
+                    sidx[gidx] <- sample(sidx[gidx])
+                    geneidx <- which(geneSubset==j)
+                    y.p[geneidx,] <- y.p[geneidx, sidx]
+                    if(!is.null(weights)) {
+                        weights.p[geneidx,] <- weights.p[geneidx, sidx]
+                    }
                 }
             }
+
+            ovesegt <- OVESEGtstat(y.p, group, weights = weights.p, alpha = alpha,
+                                   order.return = 'top1', lmfit.return = FALSE, cplusplus=cplusplus)
+
+            return(ovesegt)
         }
-
-        ovesegt <- OVESEGtstat(y.p, group, weights = weights.p, alpha = alpha,
-                               order.return = 'top1', lmfit.return = FALSE)
-
-        return(ovesegt)
     }
+
+
+
+
 
 
 

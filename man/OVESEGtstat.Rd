@@ -5,7 +5,7 @@
 \title{OVESEG test statistics}
 \usage{
 OVESEGtstat(y, group, weights = NULL, alpha = "moderated",
-  order.return = "top1", lmfit.return = FALSE)
+  order.return = "top1", lmfit.return = FALSE, cplusplus = TRUE)
 }
 \arguments{
 \item{y}{A data set that will be internally coerced into a matrix.

@@ -6,7 +6,7 @@
 \usage{
 OVEtstatPermTopM(y, group, groupOrder, M, weights = NULL,
   alpha = "moderated", NumPerm = 999, seed = 111,
-  BPPARAM = SerialParam())
+  BPPARAM = SerialParam(), cplusplus = TRUE)
 }
 \arguments{
 \item{y}{A data set that will be internally coerced into a matrix.

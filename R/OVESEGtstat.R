@@ -19,7 +19,7 @@
 #'
 #' #preprocess data
 OVESEGtstat <- function(y, group, weights = NULL, alpha = 'moderated',
-                        order.return = 'top1', lmfit.return = FALSE) {
+                        order.return = 'top1', lmfit.return = FALSE, cplusplus = TRUE) {
     K <- length(unique(group))
     if (K < 2) {
         stop("At least two groups are needed.")
@@ -30,15 +30,22 @@ OVESEGtstat <- function(y, group, weights = NULL, alpha = 'moderated',
     group <- factor(group)
     fit <- lmFit(y, model.matrix(~0+group), weights=weights)
 
-    coeff.stded <- t(apply(cbind(fit$coefficients,fit$stdev.unscaled), 1,
-        function(x) {o <- order(x[1:K], decreasing = T);
-        t <- rep(NA, K-1);
-        for(i in 2:K) {
-            t[i-1] <- (x[o[1]]- x[o[i]])/sqrt(x[o[1]+K]^2 + x[o[i]+K]^2);
-        }
-        t}))
+    if (cplusplus) {
+        coeff.stded = pairwise_tstat_unscaled(fit$coefficients,fit$stdev.unscaled);
+        tstat = row_min(coeff.stded)
+    } else {
+        coeff.stded <- t(apply(cbind(fit$coefficients,fit$stdev.unscaled), 1,
+                               function(x) {o <- order(x[1:K], decreasing = T);
+                               t <- rep(NA, K-1);
+                               for(i in 2:K) {
+                                   t[i-1] <- (x[o[1]]- x[o[i]])/sqrt(x[o[1]+K]^2 + x[o[i]+K]^2);
+                               }
+                               t}))
 
-    tstat <- apply(coeff.stded, 1, min)
+        tstat <- apply(coeff.stded, 1, min)
+    }
+
+
 
     if (!is.null(alpha)) {
         if (!is.numeric(alpha)) {
@@ -51,7 +58,11 @@ OVESEGtstat <- function(y, group, weights = NULL, alpha = 'moderated',
 
 
     if (order.return == 'top1') {
-        groupOrder <- apply(fit$coefficients, 1, which.max)
+        if (cplusplus) {
+            groupOrder <- row_which_max(fit$coefficients)
+        } else {
+            groupOrder <- apply(fit$coefficients, 1, which.max)
+        }
     } else {
         group.o <- t(apply(coeff.stded, 1, order)) + 1
         group.o <- cbind(1, group.o)

@@ -19,12 +19,12 @@
 #'
 #' #preprocess data
 posteriorProbNull <- function(y, group, weights = NULL, alpha = 'moderated',
-                              detail.return = TRUE) {
+                              detail.return = TRUE, cplusplus = TRUE) {
     K <- length(unique(group))
 
 
     ovesegt <- OVESEGtstat(y, group, weights = weights, alpha = alpha,
-                order.return = 'all', lmfit.return = TRUE)
+                order.return = 'all', lmfit.return = TRUE, cplusplus=cplusplus)
 
     groupOrder <- ovesegt$groupOrder
 
@@ -82,7 +82,7 @@ posteriorProbNull <- function(y, group, weights = NULL, alpha = 'moderated',
         Wpvalue <- rep(seq_len(nrow(F.p.value)), ceiling(1000*(1-Wsum[,M])))
         lfdrweighted <- fdrtool(F.p.value[Wpvalue,M-1],
                                 statistic="pvalue",
-                                plot = FALSE)$lfdr
+                                plot=FALSE, verbose=FALSE)$lfdr
         lfdr[Wsum[,M]<1,M-1] <- lfdrweighted[!duplicated(Wpvalue)]
 
         W[,M-1] <- (1 - Wsum[,M]) * lfdr[,M-1]

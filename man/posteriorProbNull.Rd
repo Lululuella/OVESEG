@@ -5,7 +5,7 @@
 \title{posteriorProbNull}
 \usage{
 posteriorProbNull(y, group, weights = NULL, alpha = "moderated",
-  detail.return = TRUE)
+  detail.return = TRUE, cplusplus = TRUE)
 }
 \arguments{
 \item{y}{A data set that will be internally coerced into a matrix.

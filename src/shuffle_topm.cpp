@@ -52,34 +52,31 @@ List shuffle_topm(NumericMatrix y, IntegerVector group,
 
         std::copy( a, a + nsample, &shuffletype[j][0] );
     }
-    IntegerMatrix tmp(ncombM, nsample, &shuffletype[0][0]);
-    Rcout << "shuffletype matrix is " << std::endl <<  tmp << std::endl;
 
     for( int g = 0; g < ngene; g++ )
     {
-        int* shuffle = &shuffletype[geneSubset(g)][0];
+        int* shuffle = &shuffletype[geneSubset(g) - 1][0];
         NumericMatrix::Row v = y( g , _ );
         for ( int i = 0; i < nsample; i++ )
         {
             YMat( g , i ) = v[ shuffle[i] ];
         }
     }
-    Rcout << "YMat matrix is " << std::endl << YMat << std::endl;
+
+    checkUserInterrupt();
 
     if (weights.isNotNull())
     {
-        Rcout << "weights is not null " << std::endl;
         NumericMatrix WMatrixOrig(weights);
         NumericMatrix WMat(ngene, nsample);
         for( int g = 0; g < ngene; g++ )
         {
-            int* shuffle = &shuffletype[geneSubset[g]][0];
+            int* shuffle = &shuffletype[geneSubset(g) - 1][0];
             NumericMatrix::Row w = WMatrixOrig( g , _ );
             for ( int i = 0; i < nsample; i++ )
             {
                 WMat( g , i ) = w[ shuffle[i] ];
             }
-            Rcout << "WMat matrix is " << std::endl << WMat << std::endl;
         }
         List L = List::create(Named("y") = YMat , Named("weights") = WMat);
         return L;
@@ -88,4 +85,5 @@ List shuffle_topm(NumericMatrix y, IntegerVector group,
                               Named("weights") = R_NilValue);
         return L;
     }
+
 }

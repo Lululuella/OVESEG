@@ -6,6 +6,33 @@
 #' @param y A single integer.
 #' @param group A single integer.
 #' @export
+pairwise_tstat_unscaled <- function(ymean, stdevUnscaled) {
+    .Call('_OVESEG_pairwise_tstat_unscaled', PACKAGE = 'OVESEG', ymean, stdevUnscaled)
+}
+
+#' Multiply a number by two
+#'
+#' @param y A single integer.
+#' @param group A single integer.
+#' @export
+row_min <- function(Y) {
+    .Call('_OVESEG_row_min', PACKAGE = 'OVESEG', Y)
+}
+
+#' Multiply a number by two
+#'
+#' @param y A single integer.
+#' @param group A single integer.
+#' @export
+row_which_max <- function(Y) {
+    .Call('_OVESEG_row_which_max', PACKAGE = 'OVESEG', Y)
+}
+
+#' Multiply a number by two
+#'
+#' @param y A single integer.
+#' @param group A single integer.
+#' @export
 shuffle_topm <- function(y, group, weights, combM, geneSubset, seed) {
     .Call('_OVESEG_shuffle_topm', PACKAGE = 'OVESEG', y, group, weights, combM, geneSubset, seed)
 }
