@@ -2,36 +2,74 @@
 % Please edit documentation in R/OVEtstatPermTopM.R
 \name{OVEtstatPermTopM}
 \alias{OVEtstatPermTopM}
-\title{OVESEG test perm}
+\title{OVESEG-test statistics after permuting top M groups}
 \usage{
 OVEtstatPermTopM(y, group, groupOrder, M, weights = NULL,
-  alpha = "moderated", NumPerm = 999, seed = 111,
-  BPPARAM = SerialParam(), cplusplus = TRUE)
+  alpha = "moderated", NumPerm = 999, seed = 111, BPPARAM = bpparam())
 }
 \arguments{
-\item{y}{A data set that will be internally coerced into a matrix.
-Each row is a gene and each column is a sample. Missing values
-are not supported.
-All-zero rows will be removed internally.}
+\item{y}{a numeric matrix containing log-expression or logCPM
+(log2-counts per million) values.
+Data frame, or SummarizedExperiment object will be
+internally coerced into a matrix.
+Rows correspond to probes and columns to samples.
+Missing values are not permitted.}
 
-\item{group}{The matrix whose rows are loading vectors;}
+\item{group}{categorical vector or factor giving group membership of
+columns of y. At least two categories need to be presented.}
+
+\item{groupOrder}{an integer matrix with each row giving group indexes
+ordered based on decreasing expression levels .}
+
+\item{M}{an integer indicating the number of groups being permutated.
+The range is \eqn{[2,K]}, where K is the total number of groups.}
+
+\item{weights}{optional numeric matrix containing prior weights
+for each spot.}
+
+\item{alpha}{parameter specifying within-group variance estimator to be used.
+'moderated': empirical Bayes moderated variance estimator as used in
+\code{\link[limma]{eBayes}}.
+numberic value: a constant value added to pooled variance estimator
+(\eqn{\alpha + \sigma}).
+NULL: no estimator; all variances are set to be 1.}
+
+\item{NumPerm}{an integer specifying the number of permutation resamplings
+(default 999).}
+
+\item{seed}{an integer seed for the random number generator.}
+
+\item{BPPARAM}{a BiocParallelParam object indicating whether parallelization
+should be used for permutation resamplings. The default is bpparam().}
 }
 \value{
-The data after perspective projection.
+a list containing the following components:
+\item{tstat.perm}{a numeric matrix with each column giving OVESEG-test
+statistics over the expressions after one permutation.}
+\item{topidx.perm}{a integer matrix with each colulmn giving the highest
+expressed group index over the expressions after one permutation.}
 }
 \description{
-This function reduces data dimension by loading matrix and then project
-dimension-reduced data to the hyperplane orthogonal to c(1,0,...,0),
-i.e., the first axis in the new coordinate system..
+This function permutes group labels among highest expressed M groups and
+then computes new OVESEG-test statistics.
 }
 \details{
-This function can project gene expression vectors to simplex
-filtering. This function helps observe all genes in simplex plot.
+Top M expressed groups will be involved in permutation. There are
+/eqn{C_K^M} probe patterns which are highly expressed in certain M
+groups among the total K groups. Probes of the same pattern share the same
+shuffled labels.
+
+To improve the time efficiency, some functions within permutation loop are
+implemented using c++.
 }
 \examples{
-#obtain data
 data(RocheBT)
-data <- RocheBT$y
-
-#preprocess data
+ppnull <- postProbNull(RocheBT$y, RocheBT$group, detail.return = TRUE)
+rperm <- OVEtstatPermTopM(RocheBT$y, RocheBT$group, ppnull$groupOrder, M=2,
+                         NumPerm=99, BPPARAM=BiocParallel::SerialParam())
+\dontrun{
+#parallel computing
+rperm <- OVEtstatPermTopM(RocheBT$y, RocheBT$group, ppnull$groupOrder, M=2,
+                         NumPerm=99, BPPARAM=BiocParallel::SnowParam())
+}
 }

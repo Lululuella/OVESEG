@@ -2,15 +2,13 @@
 % Please edit documentation in R/RcppExports.R
 \name{row_min}
 \alias{row_min}
-\title{Multiply a number by two}
+\title{min value for each row}
 \usage{
 row_min(Y)
 }
 \arguments{
-\item{y}{A single integer.}
-
-\item{group}{A single integer.}
+\item{Y}{a numeric matrix.}
 }
 \description{
-Multiply a number by two
+min value for each row
 }

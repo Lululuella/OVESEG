@@ -2,36 +2,34 @@
 % Please edit documentation in R/pvalueWeightedEst.R
 \name{pvalueWeightedEst}
 \alias{pvalueWeightedEst}
-\title{pvalueWeightedEst}
+\title{p-value by weighted permutation scheme}
 \usage{
-pvalueWeightedEst(tt, ttstar, w)
+pvalueWeightedEst(tt, ttperm, w)
 }
 \arguments{
-\item{tt}{A data set that will be internally coerced into a matrix.
-Each row is a gene and each column is a sample. Missing values
-are not supported.
-All-zero rows will be removed internally.}
+\item{tt}{a vector of test statistics.}
 
-\item{ttstar}{The matrix whose rows are loading vectors}
+\item{ttperm}{a matrix of test statistics from permutaitons.
+Rows correspond to probes and columns to one permutation.}
 
-\item{W}{The matrix whose rows are loading vectors}
+\item{W}{a matrix containing weights for each spot in \code{ttperm}.
+Provided by \code{\link{postProbNull}}.}
 }
 \value{
-The data after perspective projection.
+p-values.
 }
 \description{
-This function reduces data dimension by loading matrix and then project
-dimension-reduced data to the hyperplane orthogonal to c(1,0,...,0),
-i.e., the first axis in the new coordinate system..
+This function estimates p-values by aggregating weighted permutations.
 }
 \details{
-This function can project gene expression vectors to simplex
-filtering. This function helps observe all genes in simplex plot.
+P-values are estimated by weightedly accumulating test statistics
+from permutations that are larger than observations
 }
 \examples{
-#obtain data
-data(RocheBT)
-data <- RocheBT$y
+#generate some example data#'
+t.obs <- rnorm(100)
+t.perm <- matrix(rnorm(100*1000),nrow=100)
+w <- matrix(runif(100*1000),nrow=100)
 
-#preprocess data
+pv <- pvalueWeightedEst(t.obs, t.perm, w)
 }

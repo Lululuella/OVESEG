@@ -2,15 +2,13 @@
 % Please edit documentation in R/RcppExports.R
 \name{row_which_max}
 \alias{row_which_max}
-\title{Multiply a number by two}
+\title{which.max for each row}
 \usage{
 row_which_max(Y)
 }
 \arguments{
-\item{y}{A single integer.}
-
-\item{group}{A single integer.}
+\item{Y}{a numeric matrix}
 }
 \description{
-Multiply a number by two
+which.max for each row
 }

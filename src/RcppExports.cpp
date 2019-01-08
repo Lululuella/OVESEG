@@ -17,6 +17,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pvalue_weighted_est
+NumericVector pvalue_weighted_est(NumericVector tt, NumericVector ttperm, NumericVector w);
+RcppExport SEXP _OVESEG_pvalue_weighted_est(SEXP ttSEXP, SEXP ttpermSEXP, SEXP wSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type tt(ttSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ttperm(ttpermSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type w(wSEXP);
+    rcpp_result_gen = Rcpp::wrap(pvalue_weighted_est(tt, ttperm, w));
+    return rcpp_result_gen;
+END_RCPP
+}
 // row_min
 NumericVector row_min(NumericMatrix Y);
 RcppExport SEXP _OVESEG_row_min(SEXP YSEXP) {
@@ -58,6 +71,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_OVESEG_pairwise_tstat_unscaled", (DL_FUNC) &_OVESEG_pairwise_tstat_unscaled, 2},
+    {"_OVESEG_pvalue_weighted_est", (DL_FUNC) &_OVESEG_pvalue_weighted_est, 3},
     {"_OVESEG_row_min", (DL_FUNC) &_OVESEG_row_min, 1},
     {"_OVESEG_row_which_max", (DL_FUNC) &_OVESEG_row_which_max, 1},
     {"_OVESEG_shuffle_topm", (DL_FUNC) &_OVESEG_shuffle_topm, 6},

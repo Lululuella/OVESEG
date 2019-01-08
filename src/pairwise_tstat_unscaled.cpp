@@ -1,11 +1,11 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' Multiply a number by two
+//' pairwise t-statistics (unscaled)
 //'
-//' @param y A single integer.
-//' @param group A single integer.
-//' @export
+//' @param ymean a numeric matrix containing group means.
+//' @param stdevUnscaled a numeric matrix containing unscaled standard
+//'     deviations of the group means.
 // [[Rcpp::export]]
 NumericMatrix pairwise_tstat_unscaled(NumericMatrix ymean, NumericMatrix stdevUnscaled)
 {

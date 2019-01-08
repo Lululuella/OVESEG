@@ -1,38 +1,37 @@
-#' pvalueWeightedEst
+#' p-value by weighted permutation scheme
 #'
-#' This function reduces data dimension by loading matrix and then project
-#' dimension-reduced data to the hyperplane orthogonal to c(1,0,...,0),
-#' i.e., the first axis in the new coordinate system..
-#' @param tt A data set that will be internally coerced into a matrix.
-#'     Each row is a gene and each column is a sample. Missing values
-#'     are not supported.
-#'     All-zero rows will be removed internally.
-#' @param ttstar The matrix whose rows are loading vectors
-#' @param W The matrix whose rows are loading vectors
-#' @details This function can project gene expression vectors to simplex
-#' filtering. This function helps observe all genes in simplex plot.
-#' @return  The data after perspective projection.
+#' This function estimates p-values by aggregating weighted permutations.
+#' @param tt a vector of test statistics.
+#' @param ttperm a matrix of test statistics from permutaitons.
+#'     Rows correspond to probes and columns to one permutation.
+#' @param W a matrix containing weights for each spot in \code{ttperm}.
+#'     Provided by \code{\link{postProbNull}}.
+#' @details P-values are estimated by weightedly accumulating test statistics
+#' from permutations that are larger than observations
+#' @return  p-values.
 #' @export
 #' @examples
-#' #obtain data
-#' data(RocheBT)
-#' data <- RocheBT$y
+#' #generate some example data#'
+#' t.obs <- rnorm(100)
+#' t.perm <- matrix(rnorm(100*1000),nrow=100)
+#' w <- matrix(runif(100*1000),nrow=100)
 #'
-#' #preprocess data
-pvalueWeightedEst <-function (tt, ttstar, w)
+#' pv <- pvalueWeightedEst(t.obs, t.perm, w)
+pvalueWeightedEst <- function(tt, ttperm, w)
 {
-    tt <- c(tt)
-    ttstar <- c(ttstar)
-    w0 <- rep(1, length(tt))
-
-    r0 <- rank(-c(tt, ttstar), ties.method = 'last')
-    w1 <- c(w0, w)
-    w1[r0] <- w1
-    wrank <- cumsum(w1)
-
-    r <- r0[seq_along(tt)]
-    r2 <- rank(-tt)
-    r3 <- wrank[r] - r2
-    pv <- r3/sum(w)
-    return(pv)
+    return(pvalue_weighted_est(c(tt), c(ttperm), c(w)))
+    # tt <- c(tt)
+    # ttperm <- c(ttperm)
+    # w0 <- rep(1, length(tt))
+    #
+    # r0 <- rank(-c(tt, ttperm), ties.method = 'last')
+    # w1 <- c(w0, w)
+    # w1[r0] <- w1
+    # wrank <- cumsum(w1)
+    #
+    # r <- r0[seq_along(tt)]
+    # r2 <- rank(-tt)
+    # r3 <- wrank[r] - r2
+    # pv <- r3/sum(w)
+    # return(pv)
 }

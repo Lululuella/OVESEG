@@ -19,14 +19,12 @@ Suggests:
 VignetteBuilder: knitr
 Imports:
     BiocParallel,
-    stats,
-    Biobase,
     SummarizedExperiment,
     graphics,
     limma,
     fdrtool,
     Rcpp
-BugReports: 
+BugReports: https://github.com/Lululuella/OVESEG
 RoxygenNote: 6.0.1
 LinkingTo: Rcpp
 SystemRequirements: C++11

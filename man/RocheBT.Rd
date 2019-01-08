@@ -3,20 +3,21 @@
 \docType{data}
 \name{RocheBT}
 \alias{RocheBT}
-\title{mRNA expression data downsampled from GSE28490}
-\format{A list with three matrices: mixture profiles (X), mixing proportions
-(A) and pure profiles (S).}
+\title{mRNA expression data downsampled from GSE28490 (Roche)}
+\format{A list with one expression mixture (y) and a categorical vector
+giving subtypes (group).}
 \usage{
 data(RocheBT)
 }
 \description{
-Rat brain, liver and lung biospecimens derived from one animal at the cRNA
-homogenate level in different proportions. 3 technical replicates each.
-We downsample the original data to 10000 probes/probesets and 7 mixtures.
-Proportions used in experiments and pure expression profiles are also
-included.
+Three cell subtypes (B cells, CD4+ T cells, CD8+ T cells) were isolated from
+5 pools of 5 healthy donors each. RNA obtained from these 15 purified
+populations were subsequently used for mRNA expression profiling by
+HG-U133Plus2.0 microarrays. We downsample the original data to 5000
+probes/probesets.
+Subtype labels for purified populations are also included.
+(Data generation script can be found in ./data_row folder.)
 }
 \references{
-Shen-Orr et al. (2010) Nat Methods 2010 Apr;7(4):287-9.
-PMID: 20208531
+Allantaz et al. PLoS One 2012;7(1):e29979. PMID: 22276136
 }

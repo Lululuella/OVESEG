@@ -10,8 +10,6 @@
 #' @import BiocParallel
 #' @import stats
 #' @import graphics
-#' @importFrom Biobase exprs
-#' @importFrom SummarizedExperiment assay
 #' @importFrom limma lmFit
 #' @importFrom limma eBayes
 #' @importFrom fdrtool fdrtool

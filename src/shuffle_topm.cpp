@@ -2,11 +2,14 @@
 #include <random>
 using namespace Rcpp;
 
-//' Multiply a number by two
+//' Shuffle the top M groups
 //'
-//' @param y A single integer.
-//' @param group A single integer.
-//' @export
+//' @param y a numeric matrix to be shuffled.
+//' @param group a integer vector indicating group indexes.
+//' @param weights optional numeric matrix containing prior weights.
+//' @param combM a integer matrix with each row giving one choice of M groups
+//' @param geneSubset a integer vector indicating the probe pattern of combM
+//' @param seed an integer seed for the random number generator.
 // [[Rcpp::export]]
 List shuffle_topm(NumericMatrix y, IntegerVector group,
     Nullable<NumericMatrix> weights,

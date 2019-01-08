@@ -2,15 +2,16 @@
 % Please edit documentation in R/RcppExports.R
 \name{pairwise_tstat_unscaled}
 \alias{pairwise_tstat_unscaled}
-\title{Multiply a number by two}
+\title{pairwise t-statistics (unscaled)}
 \usage{
 pairwise_tstat_unscaled(ymean, stdevUnscaled)
 }
 \arguments{
-\item{y}{A single integer.}
+\item{ymean}{a numeric matrix containing group means.}
 
-\item{group}{A single integer.}
+\item{stdevUnscaled}{a numeric matrix containing unscaled standard
+deviations of the group means.}
 }
 \description{
-Multiply a number by two
+pairwise t-statistics (unscaled)
 }

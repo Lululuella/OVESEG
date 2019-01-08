@@ -2,36 +2,72 @@
 % Please edit documentation in R/OVESEGtest.R
 \name{OVESEGtest}
 \alias{OVESEGtest}
-\title{OVESEG test}
+\title{OVESEG-test}
 \usage{
 OVESEGtest(y, group, weights = NULL, alpha = "moderated", NumPerm = 999,
-  seed = 111, detail.return = TRUE, cplusplus = TRUE,
-  BPPARAM = SerialParam())
+  seed = 111, detail.return = TRUE, BPPARAM = bpparam())
 }
 \arguments{
-\item{y}{A data set that will be internally coerced into a matrix.
-Each row is a gene and each column is a sample. Missing values
-are not supported.
-All-zero rows will be removed internally.}
+\item{y}{a numeric matrix containing log-expression or logCPM
+(log2-counts per million) values.
+Data frame, or SummarizedExperiment object will be
+internally coerced into a matrix.
+Rows correspond to probes and columns to samples.
+Missing values are not permitted.}
 
-\item{group}{The matrix whose rows are loading vectors;}
+\item{group}{categorical vector or factor giving group membership of
+columns of y. At least two categories need to be presented.}
+
+\item{weights}{optional numeric matrix containing prior weights
+for each spot.}
+
+\item{alpha}{parameter specifying within-group variance estimator to be used.
+'moderated': empirical Bayes moderated variance estimator as used in
+\code{\link[limma]{eBayes}}.
+numberic value: a constant value added to pooled variance estimator
+(\eqn{\alpha + \sigma}).
+NULL: no estimator; all variances are set to be 1.}
+
+\item{NumPerm}{an integer specifying the number of permutation resamplings
+(default 999).}
+
+\item{seed}{an integer seed for the random number generator.}
+
+\item{detail.return}{a logical indicating whether more details about
+posterior probability estimation will be returned.}
+
+\item{BPPARAM}{a BiocParallelParam object indicating whether parallelization
+should be used for permutation resamplings. The default is bpparam().}
 }
 \value{
-The data after perspective projection.
+a list containing the following components:
+\item{tstat}{a vector of OVESEG-test statistics for probes.}
+\item{groupOrder}{If \code{order.return} is TRUE, a matrix with each row
+being group indexes ordered based on decreasing expression levels. If
+\code{order.return} is FALSE, a vector with each element being a probe's
+highest expressed group index.}
+\item{fit}{a \code{MArrayLM} fitted model object produced by \code{lmFit}.
+This is returned only when \code{lmfit.return} is TRUE.}
 }
 \description{
-This function reduces data dimension by loading matrix and then project
-dimension-reduced data to the hyperplane orthogonal to c(1,0,...,0),
-i.e., the first axis in the new coordinate system..
+This function performs OVESEG-test to assess significance of molecular
+markers.
 }
 \details{
-This function can project gene expression vectors to simplex
-filtering. This function helps observe all genes in simplex plot.
+OVESEG-test is a statistically-principled method that can detect
+tissue/cell-specific marker genes among many subtypes.
+OVESEG-test statistics are designed to mathematically match the definition
+of molecular markers, and a novel permutation scheme are employed to
+estimate the corresponding distribution under null hypotheses where the
+expression patterns of non-markers can be highly complex.
 }
 \examples{
-#obtain data
 data(RocheBT)
-data <- RocheBT$y
-
-#preprocess data
+rtest <- OVESEGtest(RocheBT$y, RocheBT$group, NumPerm=99,
+                    BPPARAM=BiocParallel::SerialParam())
+\dontrun{
+#parallel computing
+rtest <- OVESEGtest(RocheBT$y, RocheBT$group, NumPerm=99,
+                    BPPARAM=BiocParallel::SnowParam())
+}
 }

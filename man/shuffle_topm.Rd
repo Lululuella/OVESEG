@@ -2,15 +2,23 @@
 % Please edit documentation in R/RcppExports.R
 \name{shuffle_topm}
 \alias{shuffle_topm}
-\title{Multiply a number by two}
+\title{Shuffle the top M groups}
 \usage{
 shuffle_topm(y, group, weights, combM, geneSubset, seed)
 }
 \arguments{
-\item{y}{A single integer.}
+\item{y}{a numeric matrix to be shuffled.}
 
-\item{group}{A single integer.}
+\item{group}{a integer vector indicating group indexes.}
+
+\item{weights}{optional numeric matrix containing prior weights.}
+
+\item{combM}{a integer matrix with each row giving one choice of M groups}
+
+\item{geneSubset}{a integer vector indicating the probe pattern of combM}
+
+\item{seed}{an integer seed for the random number generator.}
 }
 \description{
-Multiply a number by two
+Shuffle the top M groups
 }

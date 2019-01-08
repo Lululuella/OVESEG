@@ -1,11 +1,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' Multiply a number by two
+//' min value for each row
 //'
-//' @param y A single integer.
-//' @param group A single integer.
-//' @export
+//' @param Y a numeric matrix.
 // [[Rcpp::export]]
 NumericVector row_min(NumericMatrix Y)
 {

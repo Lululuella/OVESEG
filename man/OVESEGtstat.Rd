@@ -2,35 +2,63 @@
 % Please edit documentation in R/OVESEGtstat.R
 \name{OVESEGtstat}
 \alias{OVESEGtstat}
-\title{OVESEG test statistics}
+\title{OVESEG-test statistics}
 \usage{
 OVESEGtstat(y, group, weights = NULL, alpha = "moderated",
-  order.return = "top1", lmfit.return = FALSE, cplusplus = TRUE)
+  order.return = FALSE, lmfit.return = FALSE)
 }
 \arguments{
-\item{y}{A data set that will be internally coerced into a matrix.
-Each row is a gene and each column is a sample. Missing values
-are not supported.
-All-zero rows will be removed internally.}
+\item{y}{a numeric matrix containing log-expression or logCPM
+(log2-counts per million) values.
+Data frame, or SummarizedExperiment object will be
+internally coerced into a matrix.
+Rows correspond to probes and columns to samples.
+Missing values are not permitted.}
 
-\item{group}{The matrix whose rows are loading vectors;}
+\item{group}{categorical vector or factor giving group membership of
+columns of y. At least two categories need to be presented.}
+
+\item{weights}{optional numeric matrix containing prior weights
+for each spot.}
+
+\item{alpha}{parameter specifying within-group variance estimator to be used.
+'moderated': empirical Bayes moderated variance estimator as used in
+\code{\link[limma]{eBayes}}.
+numberic value: a constant value added to pooled variance estimator
+(\eqn{\alpha + \sigma}).
+NULL: no estimator; all variances are set to be 1.}
+
+\item{order.return}{a logical indicating whether the order of groups
+will be returned. If FALSE, only the highest expressed group index is
+return for each probe.}
+
+\item{lmfit.return}{a logical indicating whether a \code{MArrayLM} fitted
+model object produced by \code{\link[limma]{lmFit}}
+should be returned.}
 }
 \value{
-The data after perspective projection.
+a list containing the following components:
+\item{tstat}{a vector of OVESEG-test statistics for probes.}
+\item{groupOrder}{If \code{order.return} is TRUE, a matrix with each row
+being group indexes ordered based on decreasing expression levels. If
+\code{order.return} is FALSE, a vector with each element being a probe's
+highest expressed group index.}
+\item{fit}{a \code{MArrayLM} fitted model object produced by \code{lmFit}.
+Returned only when \code{lmfit.return} is TRUE.}
 }
 \description{
-This function reduces data dimension by loading matrix and then project
-dimension-reduced data to the hyperplane orthogonal to c(1,0,...,0),
-i.e., the first axis in the new coordinate system..
+This function computes OVESEG-test statistics.
 }
 \details{
-This function can project gene expression vectors to simplex
-filtering. This function helps observe all genes in simplex plot.
+OVESEG-test statistics are designed to mathematically match the
+definition of molecular markers:
+\deqn{\max_{k=1,...,K}\left\{min_{l \neq k}\left\{ \frac{\mu_k(j)-\mu_l(j)}
+{\sigma(j)\sqrt{\frac{1}{N_k}+\frac{1}{N_l}}} \right\}\right\}},
+where \eqn{j} is probe index, \eqn{K} is the number of groups, and
+\eqn{\mu_k} is the mean expression of group \eqn{k}.
 }
 \examples{
-#obtain data
 data(RocheBT)
-data <- RocheBT$y
-
-#preprocess data
+rtest <- OVESEGtstat(RocheBT$y, RocheBT$group, alpha='moderated')
+rtest <- OVESEGtstat(RocheBT$y, RocheBT$group, alpha=0.1)
 }

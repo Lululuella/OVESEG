@@ -1,98 +1,98 @@
-#' OVESEG test
+#' OVESEG-test
 #'
-#' This function reduces data dimension by loading matrix and then project
-#' dimension-reduced data to the hyperplane orthogonal to c(1,0,...,0),
-#' i.e., the first axis in the new coordinate system..
-#' @param y A data set that will be internally coerced into a matrix.
-#'     Each row is a gene and each column is a sample. Missing values
-#'     are not supported.
-#'     All-zero rows will be removed internally.
-#' @param group The matrix whose rows are loading vectors;
-#' @details This function can project gene expression vectors to simplex
-#' filtering. This function helps observe all genes in simplex plot.
-#' @return  The data after perspective projection.
+#' This function performs OVESEG-test to assess significance of molecular
+#' markers.
+#' @param y a numeric matrix containing log-expression or logCPM
+#'     (log2-counts per million) values.
+#'     Data frame, or SummarizedExperiment object will be
+#'     internally coerced into a matrix.
+#'     Rows correspond to probes and columns to samples.
+#'     Missing values are not permitted.
+#' @param group categorical vector or factor giving group membership of
+#'     columns of y. At least two categories need to be presented.
+#' @param weights optional numeric matrix containing prior weights
+#'     for each spot.
+#' @param alpha parameter specifying within-group variance estimator to be used.
+#'     'moderated': empirical Bayes moderated variance estimator as used in
+#'     \code{\link[limma]{eBayes}}.
+#'     numberic value: a constant value added to pooled variance estimator
+#'     (\eqn{\alpha + \sigma}).
+#'     NULL: no estimator; all variances are set to be 1.
+#' @param NumPerm an integer specifying the number of permutation resamplings
+#'     (default 999).
+#' @param seed an integer seed for the random number generator.
+#' @param detail.return a logical indicating whether more details about
+#'     posterior probability estimation will be returned.
+#' @param BPPARAM a BiocParallelParam object indicating whether parallelization
+#'     should be used for permutation resamplings. The default is bpparam().
+#' @details OVESEG-test is a statistically-principled method that can detect
+#' tissue/cell-specific marker genes among many subtypes.
+#' OVESEG-test statistics are designed to mathematically match the definition
+#' of molecular markers, and a novel permutation scheme are employed to
+#' estimate the corresponding distribution under null hypotheses where the
+#' expression patterns of non-markers can be highly complex.
+#' @return a list containing the following components:
+#' \item{tstat}{a vector of OVESEG-test statistics for probes.}
+#' \item{groupOrder}{If \code{order.return} is TRUE, a matrix with each row
+#' being group indexes ordered based on decreasing expression levels. If
+#' \code{order.return} is FALSE, a vector with each element being a probe's
+#' highest expressed group index.}
+#' \item{fit}{a \code{MArrayLM} fitted model object produced by \code{lmFit}.
+#' This is returned only when \code{lmfit.return} is TRUE.}
 #' @export
 #' @examples
-#' #obtain data
 #' data(RocheBT)
-#' data <- RocheBT$y
-#'
-#' #preprocess data
+#' rtest <- OVESEGtest(RocheBT$y, RocheBT$group, NumPerm=99,
+#'                     BPPARAM=BiocParallel::SerialParam())
+#' \dontrun{
+#' #parallel computing
+#' rtest <- OVESEGtest(RocheBT$y, RocheBT$group, NumPerm=99,
+#'                     BPPARAM=BiocParallel::SnowParam())
+#'}
 OVESEGtest <- function(y, group, weights = NULL, alpha = 'moderated',
-                       NumPerm = 999, seed = 111, detail.return=TRUE, cplusplus = TRUE,
-                       BPPARAM=SerialParam()){
+                       NumPerm = 999, seed = 111, detail.return=TRUE,
+                       BPPARAM=bpparam()){
     K <- length(unique(group))
-    if (K < 2) {
-        stop("At least two groups are needed.")
-    }
-    #if (table(group))
+    group <- factor(as.character(group))
 
-
-    group <- factor(group)
-
-    ppnull <- posteriorProbNull(y, group, weights = weights, alpha = alpha,
-                                  detail.return = detail.return, cplusplus=cplusplus)
+    message('Calculating posterior probabilities of null hypotheses')
+    ppnull <- postProbNull(y, group, weights = weights, alpha = alpha,
+                            detail.return = detail.return)
 
     ## permutation among top M groups
     tstat.perm <- c()
     topidx.perm <- c()
-    for(M in seq.int(2,K)) {
-
-        ovet.perm <- OVEtstatPermTopM(y, group, ppnull$groupOrder, M=M, weights = weights, alpha = alpha,
-                         NumPerm = NumPerm, seed = seed, cplusplus=cplusplus, BPPARAM = BPPARAM)
-
+    for (M in seq.int(2,K)) {
+        message('Permuting top ', M, ' groups')
+        ovet.perm <- OVEtstatPermTopM(y, group, ppnull$groupOrder, M=M,
+                            weights = weights, alpha = alpha,
+                            NumPerm = NumPerm, seed = seed, BPPARAM = BPPARAM)
         tstat.perm <- cbind(tstat.perm, ovet.perm$tstat.perm)
         topidx.perm <- cbind(topidx.perm, ovet.perm$topidx.perm)
     }
 
+    message('Calculating p-values')
     wPerm <- ppnull$W[,rep(1:(K-1),each=NumPerm+1)]
-
     testing <- tstat.perm[,1]
     pv.overall <- pvalueWeightedEst(testing, tstat.perm, wPerm)
-    # pv.oneside <- rep(0, nrow(y))
-    # pv.oneside.max <- rep(0,K)
-    # for(M in seq_len(K)) {
-    #     idx <-
-    #     tstat.perm.oneside <- tstat.perm
-    #     tstat.perm.oneside[topidx.perm!=M] <- -1
-    #     pvtmp <- pvalueWeightedEst(c(0,testing[idx]), tstat.perm.oneside, wPerm)
-    #     pv.oneside[idx] <- pvtmp[-1]
-    #     pv.oneside.max[M] <- pvtmp[1]
-    # }
 
-    gidx <- lapply(seq_len(K), function(M) which(ppnull$groupOrder[,1]==M))
-
-    pvforOne <- function(M) {
-        tstat.perm.oneside <- tstat.perm
-        tstat.perm.oneside[topidx.perm!=M] <- -1
-        pv <- pvalueWeightedEst(c(0,testing[gidx[[M]]]), tstat.perm.oneside, wPerm)
-        pv
-    }
-    if (is.null(BPPARAM)) {
-        pvK <- lapply(seq_len(K), pvforOne)
-    } else {
-        pvK <- bplapply(seq_len(K), pvforOne,
-                                BPPARAM = BPPARAM)
-    }
     pv.oneside <- pv.overall
-    pv.oneside.max <- rep(0,K)
-    for(M in seq_len(K)) {
-        pv.oneside[gidx[[M]]] <- pvK[[M]][-1]
-        pv.oneside.max[M] <- pvK[[M]][1]
+    pv.oneside.max <- rep(0, K)
+    for (M in seq_len(K)) {
+        idx <- which(ppnull$groupOrder[,1] == M)
+        tstat.perm.oneside <- tstat.perm
+        tstat.perm.oneside[topidx.perm != M] <- -1
+        pvtmp <- pvalueWeightedEst(c(0,testing[idx]), tstat.perm.oneside, wPerm)
+        pv.oneside[idx] <- pvtmp[-1]
+        pv.oneside.max[M] <- pvtmp[1]
     }
 
     minpv <- min(rowSums(ppnull$W)) / (NumPerm + 1) / sum(ppnull$W)
-    # pv.multiside <- unlist(lapply(pv.oneside*K,
-    #                             function(x) max(minpv, min(1, x))))
-
-    pv.multiside <- pv.oneside*K
-    pv.multiside[pv.multiside<0] <- 0
-    pv.multiside[pv.multiside>1] <- 1
-
-
+    pv.multiside <- pv.oneside * K
+    pv.multiside[pv.multiside < 0] <- 0
+    pv.multiside[pv.multiside > 1] <- 1
 
     return(c(list(pv.oneside=pv.oneside, pv.oneside.max=pv.oneside.max,
                 pv.multiside=pv.multiside,
-                pv.overall=pv.overall),ppnull))
-
+                pv.overall=pv.overall), ppnull))
 }
