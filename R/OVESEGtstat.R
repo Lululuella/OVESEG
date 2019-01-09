@@ -69,7 +69,7 @@ OVESEGtstat <- function(y, group, weights=NULL, alpha='moderated',
     group <- factor(as.character(group))
 
     fit <- lmFit(y, model.matrix(~0+group), weights=weights)
-    coeff.stded = pairwise_tstat_unscaled(fit$coefficients,fit$stdev.unscaled);
+    coeff.stded = pairwise_tstat_unscaled(fit$coefficients,fit$stdev.unscaled)
     tstat = row_min(coeff.stded)
 
     if (!is.null(alpha)) {

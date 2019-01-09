@@ -10,16 +10,6 @@ pairwise_tstat_unscaled <- function(ymean, stdevUnscaled) {
     .Call('_OVESEG_pairwise_tstat_unscaled', PACKAGE = 'OVESEG', ymean, stdevUnscaled)
 }
 
-#' p-value by weighted estimation
-#'
-#' @param tt a vector of test statistics.
-#' @param ttperm a matrix of test statistics from permutaitons.
-#' @param W a matrix containing weights for each spot in ttperm.
-#' @export
-pvalue_weighted_est <- function(tt, ttperm, w) {
-    .Call('_OVESEG_pvalue_weighted_est', PACKAGE = 'OVESEG', tt, ttperm, w)
-}
-
 #' min value for each row
 #'
 #' @param Y a numeric matrix.

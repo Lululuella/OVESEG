@@ -19,19 +19,18 @@
 #' pv <- pvalueWeightedEst(t.obs, t.perm, w)
 pvalueWeightedEst <- function(tt, ttperm, w)
 {
-    return(pvalue_weighted_est(c(tt), c(ttperm), c(w)))
-    # tt <- c(tt)
-    # ttperm <- c(ttperm)
-    # w0 <- rep(1, length(tt))
-    #
-    # r0 <- rank(-c(tt, ttperm), ties.method = 'last')
-    # w1 <- c(w0, w)
-    # w1[r0] <- w1
-    # wrank <- cumsum(w1)
-    #
-    # r <- r0[seq_along(tt)]
-    # r2 <- rank(-tt)
-    # r3 <- wrank[r] - r2
-    # pv <- r3/sum(w)
-    # return(pv)
+    tt <- c(tt)
+    ttperm <- c(ttperm)
+    w0 <- rep(1, length(tt))
+
+    r0 <- rank(-c(tt, ttperm), ties.method = 'last')
+    w1 <- c(w0, w)
+    w1[r0] <- w1
+    wrank <- cumsum(w1)
+
+    r <- r0[seq_along(tt)]
+    r2 <- rank(-tt)
+    r3 <- wrank[r] - r2
+    pv <- r3/sum(w)
+    return(pv)
 }

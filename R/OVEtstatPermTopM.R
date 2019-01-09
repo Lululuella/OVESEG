@@ -101,10 +101,11 @@ OVEtstatPermTopM <- function(y, group, groupOrder, M, weights=NULL,
 #' @param y an expressions matrix
 #' @param group a integer vector indicating group labels
 #' @param weights optional numeric matrix containing prior weights
-#' @param alpha parameter specifying within-group variance estimator to be used.
+#' @param alpha parameter specifying within-group variance estimator to be used
 #' @param combM a integer matrix with each row giving one choice of M groups
 #' @param geneSubset a integer vector indicating the probe pattern of combM
 #' @param seed an integer seed for the random number generator
+#' @return test statistics and upregulated group indexes after one permutaion
 permfunc <- function(p, y, group, weights, alpha, combM, geneSubset, seeds) {
     if(p > 1){
         groupid <- unlist(lapply(group,

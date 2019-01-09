@@ -15,13 +15,16 @@ permfunc(p, y, group, weights, alpha, combM, geneSubset, seeds)
 
 \item{weights}{optional numeric matrix containing prior weights}
 
-\item{alpha}{parameter specifying within-group variance estimator to be used.}
+\item{alpha}{parameter specifying within-group variance estimator to be used}
 
 \item{combM}{a integer matrix with each row giving one choice of M groups}
 
 \item{geneSubset}{a integer vector indicating the probe pattern of combM}
 
 \item{seed}{an integer seed for the random number generator}
+}
+\value{
+test statistics and upregulated group indexes after one permutaion
 }
 \description{
 Internal function for one permutation task

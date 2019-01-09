@@ -76,6 +76,7 @@ OVESEGtest <- function(y, group, weights = NULL, alpha = 'moderated',
     testing <- tstat.perm[,1]
     pv.overall <- pvalueWeightedEst(testing, tstat.perm, wPerm)
 
+    message('Calculating p-values for each group specifically')
     pv.oneside <- pv.overall
     pv.oneside.max <- rep(0, K)
     for (M in seq_len(K)) {
@@ -92,7 +93,9 @@ OVESEGtest <- function(y, group, weights = NULL, alpha = 'moderated',
     pv.multiside[pv.multiside < 0] <- 0
     pv.multiside[pv.multiside > 1] <- 1
 
-    return(c(list(pv.oneside=pv.oneside, pv.oneside.max=pv.oneside.max,
+    return(c(list(pv.oneside=pv.oneside,
+                pv.oneside.max=pv.oneside.max,
                 pv.multiside=pv.multiside,
                 pv.overall=pv.overall), ppnull))
 }
+
