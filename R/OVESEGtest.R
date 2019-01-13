@@ -4,7 +4,7 @@
 #' markers.
 #' @param y a numeric matrix containing log-expression or logCPM
 #'     (log2-counts per million) values.
-#'     Data frame, or SummarizedExperiment object will be
+#'     Data frame or SummarizedExperiment object will be
 #'     internally coerced into a matrix.
 #'     Rows correspond to probes and columns to samples.
 #'     Missing values are not permitted.
@@ -15,7 +15,7 @@
 #' @param alpha parameter specifying within-group variance estimator to be used.
 #'     'moderated': empirical Bayes moderated variance estimator as used in
 #'     \code{\link[limma]{eBayes}}.
-#'     numberic value: a constant value added to pooled variance estimator
+#'     Numeric value: a constant value added to pooled variance estimator
 #'     (\eqn{\alpha + \sigma}).
 #'     NULL: no estimator; all variances are set to be 1.
 #' @param NumPerm an integer specifying the number of permutation resamplings
@@ -32,13 +32,28 @@
 #' estimate the corresponding distribution under null hypotheses where the
 #' expression patterns of non-markers can be highly complex.
 #' @return a list containing the following components:
-#' \item{tstat}{a vector of OVESEG-test statistics for probes.}
-#' \item{groupOrder}{If \code{order.return} is TRUE, a matrix with each row
-#' being group indexes ordered based on decreasing expression levels. If
-#' \code{order.return} is FALSE, a vector with each element being a probe's
-#' highest expressed group index.}
-#' \item{fit}{a \code{MArrayLM} fitted model object produced by \code{lmFit}.
-#' This is returned only when \code{lmfit.return} is TRUE.}
+#' \item{pv.overall}{a vector of p-values calculated by all permutations
+#' regardless of upregulated subtypes.}
+#' \item{pv.oneside}{a vector of subtype-specific p-values calculated
+#' specifically for the upregulated subtype of each probe.}
+#' \item{pv.oneside.max}{subtype-specific p-values when observed test
+#' statistic equal to zero.}
+#' \item{pv.multiside}{pv.oneside*K (K-time comparison correction) and
+#' truncated at 1.}
+#' \item{W}{a matrix of posterior probabilities for each component null
+#' hypothesis given an observed probe. Rows correspond to probes and columns
+#' to one hypothesis.}
+#' \item{label}{a vector of group labels.}
+#' \item{groupOrder}{a matrix with each row being group indexes ordered based
+#' on decreasing expression levels.
+#' Group indexes are positions in \code{label}.}
+#' \item{F.p.value}{a matrix with each column giving p-values corresponding
+#' to F-statistics on certain groups.}
+#' \item{lfdr}{a matrix with each column being local false discovery rates
+#' estimated based on one column of weighted F.p.value matrix.}
+#' \item{fit}{a \code{MArrayLM} fitted model object produced by \code{lmFit}.}
+#' \code{F.p.value}, \code{lfdr} and \code{fit} are returned only when
+#' \code{detail.return} is TRUE.
 #' @export
 #' @examples
 #' data(RocheBT)
@@ -93,9 +108,9 @@ OVESEGtest <- function(y, group, weights = NULL, alpha = 'moderated',
     pv.multiside[pv.multiside < 0] <- 0
     pv.multiside[pv.multiside > 1] <- 1
 
-    return(c(list(pv.oneside=pv.oneside,
+    return(c(list(pv.overall=pv.overall,
+                pv.oneside=pv.oneside,
                 pv.oneside.max=pv.oneside.max,
-                pv.multiside=pv.multiside,
-                pv.overall=pv.overall), ppnull))
+                pv.multiside=pv.multiside), ppnull))
 }
 

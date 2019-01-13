@@ -7,8 +7,9 @@
 row_min(Y)
 }
 \arguments{
-\item{Y}{a numeric matrix.}
+\item{Y}{a numeric matrix}
 }
 \description{
 min value for each row
 }
+\keyword{internal}

@@ -10,7 +10,7 @@ OVEtstatPermTopM(y, group, groupOrder, M, weights = NULL,
 \arguments{
 \item{y}{a numeric matrix containing log-expression or logCPM
 (log2-counts per million) values.
-Data frame, or SummarizedExperiment object will be
+Data frame or SummarizedExperiment object will be
 internally coerced into a matrix.
 Rows correspond to probes and columns to samples.
 Missing values are not permitted.}
@@ -30,7 +30,7 @@ for each spot.}
 \item{alpha}{parameter specifying within-group variance estimator to be used.
 'moderated': empirical Bayes moderated variance estimator as used in
 \code{\link[limma]{eBayes}}.
-numberic value: a constant value added to pooled variance estimator
+Numeric value: a constant value added to pooled variance estimator
 (\eqn{\alpha + \sigma}).
 NULL: no estimator; all variances are set to be 1.}
 
@@ -55,11 +55,11 @@ then computes new OVESEG-test statistics.
 }
 \details{
 Top M expressed groups will be involved in permutation. There are
-/eqn{C_K^M} probe patterns which are highly expressed in certain M
+\eqn{C_K^M} probe patterns in which probes are highly expressed in certain M
 groups among the total K groups. Probes of the same pattern share the same
 shuffled labels.
 
-To improve the time efficiency, some functions within permutation loop are
+To improve the time efficiency, some functions within permutation loops are
 implemented using c++.
 }
 \examples{

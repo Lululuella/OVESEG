@@ -12,3 +12,4 @@ row_which_max(Y)
 \description{
 which.max for each row
 }
+\keyword{internal}

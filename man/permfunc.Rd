@@ -29,3 +29,4 @@ test statistics and upregulated group indexes after one permutaion
 \description{
 Internal function for one permutation task
 }
+\keyword{internal}

@@ -5,7 +5,7 @@
 #' will be used as weights for aggregating permutations.
 #' @param y a numeric matrix containing log-expression or logCPM
 #'     (log2-counts per million) values.
-#'     Data frame, or SummarizedExperiment object will be
+#'     Data frame or SummarizedExperiment object will be
 #'     internally coerced into a matrix.
 #'     Rows correspond to probes and columns to samples.
 #'     Missing values are not permitted.
@@ -16,7 +16,7 @@
 #' @param alpha parameter specifying within-group variance estimator to be used.
 #'     'moderated': empirical Bayes moderated variance estimator as used in
 #'     \code{\link[limma]{eBayes}}.
-#'     numberic value: a constant value added to pooled variance estimator
+#'     Numeric value: a constant value added to pooled variance estimator
 #'     (\eqn{\alpha + \sigma}).
 #'     NULL: no estimator; all variances are set to be 1.
 #' @param detail.return a logical indicating whether more details (e.g. lfdr)
@@ -29,8 +29,10 @@
 #' \item{W}{a matrix of posterior probabilities for each component null
 #' hypothesis given an observed probe. Rows correspond to probes and columns
 #' to one hypothesis.}
+#' \item{label}{a vector of group labels.}
 #' \item{groupOrder}{a matrix with each row being group indexes ordered based
-#' on decreasing expression levels.}
+#' on decreasing expression levels.
+#' Group indexes are positions in \code{label}.}
 #' \item{F.p.value}{a matrix with each column giving p-values corresponding
 #' to F-statistics on certain groups.}
 #' \item{lfdr}{a matrix with each column being local false discovery rates
@@ -116,9 +118,10 @@ postProbNull <- function(y, group, weights=NULL, alpha='moderated',
     }
 
     if (detail.return) {
-        return(list(W=W, groupOrder=groupOrder, F.p.value=F.p.value, lfdr=lfdr,
+        return(list(W=W, label=ovesegt$label, groupOrder=groupOrder,
+                    F.p.value=F.p.value, lfdr=lfdr,
                     fit=ovesegt$fit))
     } else {
-        return(list(W=W, groupOrder=groupOrder))
+        return(list(W=W, label=ovesegt$label, groupOrder=groupOrder))
     }
 }

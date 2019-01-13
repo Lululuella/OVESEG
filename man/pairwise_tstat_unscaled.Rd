@@ -15,3 +15,4 @@ deviations of the group means.}
 \description{
 pairwise t-statistics (unscaled)
 }
+\keyword{internal}

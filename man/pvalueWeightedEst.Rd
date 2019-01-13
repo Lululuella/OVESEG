@@ -9,7 +9,7 @@ pvalueWeightedEst(tt, ttperm, w)
 \arguments{
 \item{tt}{a vector of test statistics.}
 
-\item{ttperm}{a matrix of test statistics from permutaitons.
+\item{ttperm}{a matrix of test statistics from permutations.
 Rows correspond to probes and columns to one permutation.}
 
 \item{W}{a matrix containing weights for each spot in \code{ttperm}.
@@ -26,7 +26,7 @@ P-values are estimated by weightedly accumulating test statistics
 from permutations that are larger than observations
 }
 \examples{
-#generate some example data#'
+#generate some example data
 t.obs <- rnorm(100)
 t.perm <- matrix(rnorm(100*1000),nrow=100)
 w <- matrix(runif(100*1000),nrow=100)

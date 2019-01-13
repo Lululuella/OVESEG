@@ -6,13 +6,15 @@
 #' @param ymean a numeric matrix containing group means.
 #' @param stdevUnscaled a numeric matrix containing unscaled standard
 #'     deviations of the group means.
+#' @keywords internal
 pairwise_tstat_unscaled <- function(ymean, stdevUnscaled) {
     .Call('_OVESEG_pairwise_tstat_unscaled', PACKAGE = 'OVESEG', ymean, stdevUnscaled)
 }
 
 #' min value for each row
 #'
-#' @param Y a numeric matrix.
+#' @param Y a numeric matrix
+#' @keywords internal
 row_min <- function(Y) {
     .Call('_OVESEG_row_min', PACKAGE = 'OVESEG', Y)
 }
@@ -20,6 +22,7 @@ row_min <- function(Y) {
 #' which.max for each row
 #'
 #' @param Y a numeric matrix
+#' @keywords internal
 row_which_max <- function(Y) {
     .Call('_OVESEG_row_which_max', PACKAGE = 'OVESEG', Y)
 }
@@ -32,6 +35,7 @@ row_which_max <- function(Y) {
 #' @param combM a integer matrix with each row giving one choice of M groups
 #' @param geneSubset a integer vector indicating the probe pattern of combM
 #' @param seed an integer seed for the random number generator.
+#' @keywords internal
 shuffle_topm <- function(y, group, weights, combM, geneSubset, seed) {
     .Call('_OVESEG_shuffle_topm', PACKAGE = 'OVESEG', y, group, weights, combM, geneSubset, seed)
 }

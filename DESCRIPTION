@@ -1,12 +1,16 @@
 Package: OVESEG
 Type: Package
-Title: OVESEG-test to detect tissue/cell-specific markers among many subtypes
+Title: OVESEG-test to detect tissue/cell-specific markers
 Version: 0.99.0
 Author: Lulu Chen <luluchen@vt.edu>
 Maintainer: Lulu Chen <luluchen@vt.edu>
 biocViews: Software, CellBiology, GeneExpression
-Description: An R package for tissue heterogeneity characterization by convex 
-    analysis of m.
+Description: An R package for multiple-group comparison to detect 
+    tissue/cell-specific marker genes among subtypes. It provides functions to 
+    compute OVESEG-test statistics, derive component weights in the mixture 
+    null distribution model and estimate p-values from weightedly aggregated 
+    permutations. Obtained posterior probabilities of component null hypotheses
+    can also portrait all kinds of upregulation patterns among subtypes.
 License: GPL-2
 Encoding: UTF-8
 Depends: R (>= 3.5) 
@@ -15,12 +19,16 @@ Suggests:
     rmarkdown,
     BiocStyle,
     testthat,
-    GEOquery
+    GEOquery,
+    ggplot2,
+    gridExtra,
+    grid,
+    reshape2,
+    scales
 VignetteBuilder: knitr
 Imports:
     BiocParallel,
     SummarizedExperiment,
-    graphics,
     limma,
     fdrtool,
     Rcpp

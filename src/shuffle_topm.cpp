@@ -10,6 +10,7 @@ using namespace Rcpp;
 //' @param combM a integer matrix with each row giving one choice of M groups
 //' @param geneSubset a integer vector indicating the probe pattern of combM
 //' @param seed an integer seed for the random number generator.
+//' @keywords internal
 // [[Rcpp::export]]
 List shuffle_topm(NumericMatrix y, IntegerVector group,
     Nullable<NumericMatrix> weights,

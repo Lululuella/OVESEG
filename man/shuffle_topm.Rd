@@ -22,3 +22,4 @@ shuffle_topm(y, group, weights, combM, geneSubset, seed)
 \description{
 Shuffle the top M groups
 }
+\keyword{internal}

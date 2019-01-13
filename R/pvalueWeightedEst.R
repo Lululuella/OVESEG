@@ -2,7 +2,7 @@
 #'
 #' This function estimates p-values by aggregating weighted permutations.
 #' @param tt a vector of test statistics.
-#' @param ttperm a matrix of test statistics from permutaitons.
+#' @param ttperm a matrix of test statistics from permutations.
 #'     Rows correspond to probes and columns to one permutation.
 #' @param W a matrix containing weights for each spot in \code{ttperm}.
 #'     Provided by \code{\link{postProbNull}}.
@@ -11,7 +11,7 @@
 #' @return  p-values.
 #' @export
 #' @examples
-#' #generate some example data#'
+#' #generate some example data
 #' t.obs <- rnorm(100)
 #' t.perm <- matrix(rnorm(100*1000),nrow=100)
 #' w <- matrix(runif(100*1000),nrow=100)
@@ -29,7 +29,7 @@ pvalueWeightedEst <- function(tt, ttperm, w)
     wrank <- cumsum(w1)
 
     r <- r0[seq_along(tt)]
-    r2 <- rank(-tt)
+    r2 <- rank(-tt, ties.method = 'last')
     r3 <- wrank[r] - r2
     pv <- r3/sum(w)
     return(pv)
