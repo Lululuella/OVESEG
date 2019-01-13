@@ -13,7 +13,7 @@ Description: An R package for multiple-group comparison to detect
     can also portrait all kinds of upregulation patterns among subtypes.
 License: GPL-2
 Encoding: UTF-8
-Depends: R (>= 3.5) 
+Depends: R (>= 3.6)
 Suggests:
     knitr,
     rmarkdown,
