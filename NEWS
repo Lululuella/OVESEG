@@ -3,3 +3,6 @@ Changes in version 0.99.0 (2019-01-10)
 
 Changes in version 0.99.1 (2019-01-14)
 + modifiy vignette to fix TIMEOUT build in MAC
+
+Changes in version 0.99.2 (2019-01-14)
++ trigger version bump

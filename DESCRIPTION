@@ -1,7 +1,7 @@
 Package: OVESEG
 Type: Package
 Title: OVESEG-test to detect tissue/cell-specific markers
-Version: 0.99.1
+Version: 0.99.2
 Author: Lulu Chen <luluchen@vt.edu>
 Maintainer: Lulu Chen <luluchen@vt.edu>
 biocViews: Software, MultipleComparison, CellBiology, GeneExpression
