@@ -1,2 +1,5 @@
 Changes in version 0.99.0 (2019-01-10)
 + Submitted to Bioconductor
+
+Changes in version 0.99.1 (2019-01-14)
++ modifiy vignette to fix TIMEOUT build in MAC

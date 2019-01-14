@@ -26,7 +26,7 @@ OVESEG-test (One Versus Everyone Subtype Exclusively-expressed Genes test) is a 
 
 # Quick Start
 
-The function `OVESEGtest()` includes all necessary steps to obtain OVESEG-test p-values. You need to specify the expression matrix, tissue/cell type labels, number of permutations, and parallel option. For microarray data, the expressions need to be log2-transformed prior to the test. For RNAseq count data, the counts need to be transformed to logCPM (log2-counts per million) prior to the test and use `limma::voom()` to incorporate the mean-variance relationship.   
+The function `OVESEGtest()` includes all necessary steps to obtain OVESEG-test p-values. You need to specify the expression matrix, tissue/cell type labels, number of permutations, and parallel option. For microarray data, the expressions need to be log2-transformed prior to the test. For RNAseq count data, the counts need to be transformed to logCPM (log2-counts per million) prior to the test and use `limma::voom()` to incorporate the mean-variance relationship. Parallel option is set according to `r Biocpkg("BiocParallel")` package.
 
 ```{r, eval=FALSE}
 #Microarray
@@ -73,7 +73,8 @@ keep <- (groupMeanMax > log2(64))
 y <- y[keep,]
 
 #OVESEG-test
-rtest1 <- OVESEGtest(y, group, NumPerm = 999)
+rtest1 <- OVESEGtest(y, group, NumPerm = 999, 
+                     BPPARAM=BiocParallel::SnowParam())
 ```
 
 Note there are many low-expressed probe filtering methods. Here we filtered the probes whose mean expression is less than a threshold even in the highest expressed group. If mean-variance relationship is obvious, we can consider to apply `limma::vooma()` firstly.
@@ -81,7 +82,8 @@ Note there are many low-expressed probe filtering methods. Here we filtered the 
 ```{r, echo=TRUE}
 #OVESEG-test
 yvooma <- limma::vooma(y, model.matrix(~0+factor(group)))
-rtest2 <- OVESEGtest(yvooma$E, group, weights=yvooma$weights, NumPerm = 999)
+rtest2 <- OVESEGtest(yvooma$E, group, weights=yvooma$weights, NumPerm = 999,
+                     BPPARAM=BiocParallel::SnowParam())
 ```
 
 ## RNAseq count data
@@ -105,7 +107,8 @@ count <- count[keep,]
 lib.size <- max(colSums(count))
 yvoom <- limma::voom(count, model.matrix(~0+factor(group)), 
                      lib.size = lib.size)
-rtest3 <- OVESEGtest(yvoom$E, group, weights=yvoom$weights, NumPerm = 999)
+rtest3 <- OVESEGtest(yvoom$E, group, weights=yvoom$weights, NumPerm = 999,
+                     BPPARAM=BiocParallel::SnowParam())
 ```
 Note there are many low-expressed probe filtering methods. Here we filtered the probes whose mean count is less than a threshold even in the highest expressed group. `lib.size` and other parameters in `limma::voom()` can be set manually according to `r Biocpkg("limma")` package.
 
