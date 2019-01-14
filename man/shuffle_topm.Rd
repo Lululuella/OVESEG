@@ -13,11 +13,14 @@ shuffle_topm(y, group, weights, combM, geneSubset, seed)
 
 \item{weights}{optional numeric matrix containing prior weights.}
 
-\item{combM}{a integer matrix with each row giving one choice of M groups}
+\item{combM}{a integer matrix with each row giving one choice of M groups.}
 
-\item{geneSubset}{a integer vector indicating the probe pattern of combM}
+\item{geneSubset}{a integer vector indicating the probe pattern of combM.}
 
 \item{seed}{an integer seed for the random number generator.}
+}
+\value{
+shuffled expression matrix and weight matrix in top M groups.
 }
 \description{
 Shuffle the top M groups

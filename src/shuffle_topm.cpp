@@ -7,9 +7,10 @@ using namespace Rcpp;
 //' @param y a numeric matrix to be shuffled.
 //' @param group a integer vector indicating group indexes.
 //' @param weights optional numeric matrix containing prior weights.
-//' @param combM a integer matrix with each row giving one choice of M groups
-//' @param geneSubset a integer vector indicating the probe pattern of combM
+//' @param combM a integer matrix with each row giving one choice of M groups.
+//' @param geneSubset a integer vector indicating the probe pattern of combM.
 //' @param seed an integer seed for the random number generator.
+//' @return shuffled expression matrix and weight matrix in top M groups.
 //' @keywords internal
 // [[Rcpp::export]]
 List shuffle_topm(NumericMatrix y, IntegerVector group,

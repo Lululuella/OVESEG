@@ -92,8 +92,8 @@ We use a data set of purified B cells, CD4+ T cells and CD8+ T cells (downsample
 library(OVESEG)
 #Import data
 data(countBT)
-count <- countBT$count
-group <- countBT$group
+count <- countBT$count #10000*60 matrix
+group <- countBT$group #60 labels
 
 #filter low-expressed probes
 groupMean <- sapply(levels(group), function(x) rowMeans(count[,group == x]))

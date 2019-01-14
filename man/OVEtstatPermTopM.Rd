@@ -5,7 +5,8 @@
 \title{OVESEG-test statistics after permuting top M groups}
 \usage{
 OVEtstatPermTopM(y, group, groupOrder, M, weights = NULL,
-  alpha = "moderated", NumPerm = 999, seed = 111, BPPARAM = bpparam())
+  alpha = "moderated", NumPerm = 999, seed = 111,
+  BPPARAM = bpparam())
 }
 \arguments{
 \item{y}{a numeric matrix containing log-expression or logCPM

@@ -6,6 +6,7 @@
 #' @param ymean a numeric matrix containing group means.
 #' @param stdevUnscaled a numeric matrix containing unscaled standard
 #'     deviations of the group means.
+#' @return unscaled pairwise t-statistics
 #' @keywords internal
 pairwise_tstat_unscaled <- function(ymean, stdevUnscaled) {
     .Call('_OVESEG_pairwise_tstat_unscaled', PACKAGE = 'OVESEG', ymean, stdevUnscaled)
@@ -14,6 +15,7 @@ pairwise_tstat_unscaled <- function(ymean, stdevUnscaled) {
 #' min value for each row
 #'
 #' @param Y a numeric matrix
+#' @return a numeric vector indicating min value in each row
 #' @keywords internal
 row_min <- function(Y) {
     .Call('_OVESEG_row_min', PACKAGE = 'OVESEG', Y)
@@ -22,6 +24,7 @@ row_min <- function(Y) {
 #' which.max for each row
 #'
 #' @param Y a numeric matrix
+#' @return a integer vector indicating the location of max value in each row
 #' @keywords internal
 row_which_max <- function(Y) {
     .Call('_OVESEG_row_which_max', PACKAGE = 'OVESEG', Y)
@@ -32,9 +35,10 @@ row_which_max <- function(Y) {
 #' @param y a numeric matrix to be shuffled.
 #' @param group a integer vector indicating group indexes.
 #' @param weights optional numeric matrix containing prior weights.
-#' @param combM a integer matrix with each row giving one choice of M groups
-#' @param geneSubset a integer vector indicating the probe pattern of combM
+#' @param combM a integer matrix with each row giving one choice of M groups.
+#' @param geneSubset a integer vector indicating the probe pattern of combM.
 #' @param seed an integer seed for the random number generator.
+#' @return shuffled expression matrix and weight matrix in top M groups.
 #' @keywords internal
 shuffle_topm <- function(y, group, weights, combM, geneSubset, seed) {
     .Call('_OVESEG_shuffle_topm', PACKAGE = 'OVESEG', y, group, weights, combM, geneSubset, seed)

@@ -4,7 +4,7 @@
 #' @param tt a vector of test statistics.
 #' @param ttperm a matrix of test statistics from permutations.
 #'     Rows correspond to probes and columns to one permutation.
-#' @param W a matrix containing weights for each spot in \code{ttperm}.
+#' @param w a matrix containing weights for each spot in \code{ttperm}.
 #'     Provided by \code{\link{postProbNull}}.
 #' @details P-values are estimated by weightedly accumulating test statistics
 #' from permutations that are larger than observations

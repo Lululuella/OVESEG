@@ -4,6 +4,7 @@ using namespace Rcpp;
 //' min value for each row
 //'
 //' @param Y a numeric matrix
+//' @return a numeric vector indicating min value in each row
 //' @keywords internal
 // [[Rcpp::export]]
 NumericVector row_min(NumericMatrix Y)

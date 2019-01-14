@@ -9,6 +9,9 @@ row_which_max(Y)
 \arguments{
 \item{Y}{a numeric matrix}
 }
+\value{
+a integer vector indicating the location of max value in each row
+}
 \description{
 which.max for each row
 }

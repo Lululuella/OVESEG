@@ -9,6 +9,9 @@ row_min(Y)
 \arguments{
 \item{Y}{a numeric matrix}
 }
+\value{
+a numeric vector indicating min value in each row
+}
 \description{
 min value for each row
 }

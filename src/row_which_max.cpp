@@ -4,6 +4,7 @@ using namespace Rcpp;
 //' which.max for each row
 //'
 //' @param Y a numeric matrix
+//' @return a integer vector indicating the location of max value in each row
 //' @keywords internal
 // [[Rcpp::export]]
 IntegerVector row_which_max(NumericMatrix Y)

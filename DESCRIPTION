@@ -4,7 +4,7 @@ Title: OVESEG-test to detect tissue/cell-specific markers
 Version: 0.99.0
 Author: Lulu Chen <luluchen@vt.edu>
 Maintainer: Lulu Chen <luluchen@vt.edu>
-biocViews: Software, CellBiology, GeneExpression
+biocViews: Software, MultipleComparison, CellBiology, GeneExpression
 Description: An R package for multiple-group comparison to detect 
     tissue/cell-specific marker genes among subtypes. It provides functions to 
     compute OVESEG-test statistics, derive component weights in the mixture 
@@ -13,13 +13,12 @@ Description: An R package for multiple-group comparison to detect
     can also portrait all kinds of upregulation patterns among subtypes.
 License: GPL-2
 Encoding: UTF-8
-Depends: R (>= 3.5)
+Depends: R (>= 3.6)
 Suggests:
     knitr,
     rmarkdown,
     BiocStyle,
     testthat,
-    GEOquery,
     ggplot2,
     gridExtra,
     grid,
@@ -27,12 +26,15 @@ Suggests:
     scales
 VignetteBuilder: knitr
 Imports:
+    stats,
+    utils,
+    methods,
     BiocParallel,
     SummarizedExperiment,
     limma,
     fdrtool,
     Rcpp
 BugReports: https://github.com/Lululuella/OVESEG
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 LinkingTo: Rcpp
 SystemRequirements: C++11

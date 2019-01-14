@@ -6,6 +6,7 @@ using namespace Rcpp;
 //' @param ymean a numeric matrix containing group means.
 //' @param stdevUnscaled a numeric matrix containing unscaled standard
 //'     deviations of the group means.
+//' @return unscaled pairwise t-statistics
 //' @keywords internal
 // [[Rcpp::export]]
 NumericMatrix pairwise_tstat_unscaled(NumericMatrix ymean, NumericMatrix stdevUnscaled)

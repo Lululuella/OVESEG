@@ -62,7 +62,7 @@ OVEtstatPermTopM <- function(y, group, groupOrder, M, weights=NULL,
 
     seeds <- unlist(lapply(seq_len(NumPerm), function(x) seed + x - 1))
 
-    combM <- t(combn(K, M))
+    combM <- t(utils::combn(K, M))
     ncombM <- nrow(combM)
     geneSubset <- integer(nrow(y))
     for (j in seq_len(ncombM)) {

@@ -12,6 +12,9 @@ pairwise_tstat_unscaled(ymean, stdevUnscaled)
 \item{stdevUnscaled}{a numeric matrix containing unscaled standard
 deviations of the group means.}
 }
+\value{
+unscaled pairwise t-statistics
+}
 \description{
 pairwise t-statistics (unscaled)
 }

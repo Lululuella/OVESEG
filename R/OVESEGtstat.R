@@ -89,8 +89,8 @@ OVESEGtstat <- function(y, group, weights=NULL, alpha='moderated',
         group.o <- apply(coeff.stded, 1, order) + 1
         group.o <- rbind(1, group.o)
         group.o <- t(group.o)
-        groupOrder <- t(apply(cbind(fit$coefficients, group.o), 1,
-            function(x) order(x[1:K], decreasing = T)[x[K + 1:K]]))
+        groupOrder <- t(apply(cbind(fit$coefficients, group.o), 1, function(x)
+            order(x[seq_len(K)], decreasing=TRUE)[x[K + seq_len(K)]]))
     }
 
     if (lmfit.return) {

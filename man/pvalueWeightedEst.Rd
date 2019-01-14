@@ -12,7 +12,7 @@ pvalueWeightedEst(tt, ttperm, w)
 \item{ttperm}{a matrix of test statistics from permutations.
 Rows correspond to probes and columns to one permutation.}
 
-\item{W}{a matrix containing weights for each spot in \code{ttperm}.
+\item{w}{a matrix containing weights for each spot in \code{ttperm}.
 Provided by \code{\link{postProbNull}}.}
 }
 \value{

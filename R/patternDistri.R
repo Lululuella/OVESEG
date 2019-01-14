@@ -23,7 +23,7 @@ patternDistri <- function(ppnull)
     compWAll <- c()
     pattern <- c()
     for (M in seq_len(K)) {
-        combM <- combn(K,M)
+        combM <- utils::combn(K,M)
         ncombM <- ncol(combM)
         geneSubset <- integer(ngene)
         for (j in seq_len(ncombM)) {

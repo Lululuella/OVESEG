@@ -4,8 +4,9 @@
 \alias{OVESEGtest}
 \title{OVESEG-test}
 \usage{
-OVESEGtest(y, group, weights = NULL, alpha = "moderated", NumPerm = 999,
-  seed = 111, detail.return = TRUE, BPPARAM = bpparam())
+OVESEGtest(y, group, weights = NULL, alpha = "moderated",
+  NumPerm = 999, seed = 111, detail.return = TRUE,
+  BPPARAM = bpparam())
 }
 \arguments{
 \item{y}{a numeric matrix containing log-expression or logCPM

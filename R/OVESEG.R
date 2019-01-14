@@ -20,6 +20,10 @@
 #' @aliases OVESEG
 #'
 #' @import BiocParallel
+#' @importFrom methods is
+#' @importFrom stats pf
+#' @importFrom stats pchisq
+#' @importFrom stats model.matrix
 #' @importFrom limma lmFit
 #' @importFrom limma eBayes
 #' @importFrom fdrtool fdrtool

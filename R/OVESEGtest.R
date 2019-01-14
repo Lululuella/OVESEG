@@ -87,7 +87,7 @@ OVESEGtest <- function(y, group, weights = NULL, alpha = 'moderated',
     }
 
     message('Calculating p-values')
-    wPerm <- ppnull$W[,rep(1:(K-1),each=NumPerm+1)]
+    wPerm <- ppnull$W[,rep(seq_len(K-1),each=NumPerm+1)]
     testing <- tstat.perm[,1]
     pv.overall <- pvalueWeightedEst(testing, tstat.perm, wPerm)
 
