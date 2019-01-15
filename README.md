@@ -6,12 +6,10 @@ This R package provides functions to compute OVESEG-test statistics and estimate
 
 ## Installation
 
-You can install the latest version of OVESEG following the instructions in OVESEG's bioconductor page: http://bioconductor.org/packages/OVESEG.
-
-Or, you can install it from github by
+You can install OVESEG, depending on R (>=3.5), from github by
 
 ``` r
-devtools::install_github("Lululuella/OVESEG")
+devtools::install_github("Lululuella/OVESEG@pre-Bioconductor")
 ```
 
 ## Example
